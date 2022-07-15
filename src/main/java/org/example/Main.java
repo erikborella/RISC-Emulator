@@ -17,6 +17,7 @@ public class Main {
             System.out.println("Usage: <code path> " +
                     "-r || --registers <number of registers> " +
                     "[-s || --strictMode]");
+            System.exit(1);
         }
 
         if (!args[1].equals("-r") && args[1].equals("--registers")) {
@@ -24,6 +25,7 @@ public class Main {
                     Please inform the number of registers with -r or --registers
                     Example: <path to code> -r 5
                     """);
+            System.exit(1);
         }
 
         boolean strictMode = args.length >= 4 && (args[3].equals("-s") || args[3].equals("--strictMode"));
