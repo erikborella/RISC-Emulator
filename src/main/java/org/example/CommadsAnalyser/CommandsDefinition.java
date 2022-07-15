@@ -24,7 +24,7 @@ import java.util.HashMap;
         commands.put("CMP", cmp);
         commands.put("B", branch);
         commands.put("BEQ", branch);
-        commands.put("BNQ", branch);
+        commands.put("BNE", branch);
         commands.put("BLT", branch);
         commands.put("BLE", branch);
         commands.put("BGT", branch);

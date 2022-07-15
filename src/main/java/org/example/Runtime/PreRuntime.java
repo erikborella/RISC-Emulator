@@ -9,7 +9,7 @@ import java.util.*;
 
 public class PreRuntime {
 
-    public static Runtime PrepareRuntime(String program, int registersNumber) throws Exception {
+    public static Runtime PrepareRuntime(String program, int registersNumber, boolean strictMode) throws Exception {
         List<Token> tokens = Lexer.Parse(program);
         List<String> linesSnapshot = Lexer.getLinesSnapshot(program);
 
@@ -17,7 +17,7 @@ public class PreRuntime {
 
         SyntaxAnalyser.Analyse(tokens, linesSnapshot);
 
-        return null;
+        return new Runtime(tokens, linesSnapshot, labels, registersNumber, strictMode);
     }
 
     private static Map<String, Integer> indexLabels(List<Token> tokens, List<String> linesSnapshot) throws Exception {
