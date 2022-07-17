@@ -154,20 +154,24 @@ public class Runtime {
         return value;
     }
 
-    private int getVariableValueAndAdvance() throws Exception {
+    private int getVariableValueOrLiteralAndAdvance() throws Exception {
         Token currentToken = this.getCurrentTokenAndAdvance();
 
-        if (this.strictMode && !this.memory.containsKey(currentToken.getValue())) {
-            throw new Exception(String.format("""
+        if (currentToken.getType() == TokenType.VARIABLE) {
+            if (this.strictMode && !this.memory.containsKey(currentToken.getValue())) {
+                throw new Exception(String.format("""
                     Erro na linha %d "%s",
                     Variavel "%s" nao esta definda
                     Voce esta no modo estrito, defina as suas variaveis antes usando STR
                     """,
-                    currentToken.getLine(), linesSnapshot.get(currentToken.getLine()-1),
-                    currentToken.getValue()));
+                        currentToken.getLine(), linesSnapshot.get(currentToken.getLine()-1),
+                        currentToken.getValue()));
+            }
+
+            return this.memory.getOrDefault(currentToken.getValue(), 0);
         }
 
-        return this.memory.getOrDefault(currentToken.getValue(), 0);
+        return Integer.parseInt(currentToken.getValue());
     }
 
     private void setInstructionPointerToLabel(Token currentToken) throws Exception {
@@ -221,7 +225,7 @@ public class Runtime {
 
     private void executeLdr() throws Exception {
         int resultRegister = this.getRegisterAndAdvance();
-        int value = this.getVariableValueAndAdvance();
+        int value = this.getVariableValueOrLiteralAndAdvance();
 
         this.registers[resultRegister] = value;
     }
